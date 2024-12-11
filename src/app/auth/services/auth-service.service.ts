@@ -6,6 +6,7 @@ import {
   AuthStatus,
   CheckTokenResponse,
   LoginResponse,
+  RegisterResponse,
   User,
 } from '../interfaces';
 
@@ -59,6 +60,19 @@ export class AuthService {
       catchError((err) => throwError(() => err.error.message))
     );
   }
+
+  // *funcion para el register
+  register(name: string, email: string, password: string): Observable<boolean> {
+    const url = `${this.baseUrl}/auth/register`;
+    const body = { name: name, email: email, password: password };
+    return this.http.post<RegisterResponse>(url, body).pipe(
+      // si todo esta bien se invoca la funcion de autenticacion
+      map(({ user, token }) => this.setAuthetication(user, token)),
+      // sino devuelve el mensaje de error
+      catchError((err) => throwError(() => err.error.message))
+    );
+  }
+
   // *funcion para chequear la validez del token
   checkAuthStatus(): Observable<boolean> {
     // definimos el endpoint en el backend para hacer la comprobacion

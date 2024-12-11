@@ -17,12 +17,18 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'auth',
+    redirectTo: 'auth/register',
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(
+      routes,
+      // hay que usar el hash para evitar problemas en el enrutamiento
+      { useHash: true }
+    ),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
